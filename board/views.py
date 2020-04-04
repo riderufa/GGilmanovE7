@@ -18,14 +18,11 @@ class AdvertList(ListView):
         context = super().get_context_data(**kwargs)
         adverts = cache.get('adverts')
         if adverts:
-            print('redis')
             adverts = pickle.loads(adverts)
         else:
-            print('mongo')
             adverts = Advert.objects.all()
             cache.set('adverts', pickle.dumps(adverts))
         context['advert_list'] = adverts
-        print(adverts)
         return context
 
 class AdvertDetail(DetailView):
@@ -36,25 +33,17 @@ class AdvertDetail(DetailView):
         context = super().get_context_data(**kwargs)
         adverts = cache.get('adverts')
         if adverts:
-            print('redis')
             adverts = pickle.loads(adverts)
         else:
-            print('mongo')
             adverts = Advert.objects.all()
             cache.set('adverts', pickle.dumps(adverts))
         context['advert'] = adverts.get(pk=self.kwargs['pk'])
-        print(context)
         return context
         
 class AdvertStat(DetailView):
     model = Advert
     template_name = 'advert_stat.html'
     context_object_name = 'advert'
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     context['tags_count'] = Tag.objects.filter(adverts__pk=self.kwargs['pk']).count()
-    #     return context
 
 class CreateTag(CreateView):
     template_name = 'tag_create.html'
