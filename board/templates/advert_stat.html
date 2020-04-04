@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-6 mt-5">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-primary">{{ advert.id }}</li>    
+                <li class="list-group-item list-group-item-primary">{{ advert.title }}</li>
+                <li class="list-group-item list-group-item-primary">{{ advert.body }}</li>
+                <li class="list-group-item list-group-item-primary">{{ advert.date_adv }}</li>
+                <li class="list-group-item list-group-item-primary">Tags {{ advert.tags.count }}</li>
+                <li class="list-group-item list-group-item-primary">Comments {{ advert.comments.count }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

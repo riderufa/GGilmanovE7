@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-6 mt-5">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-primary">{{ advert.id }}</li>    
+                <li class="list-group-item list-group-item-primary">{{ advert.title }}</li>
+                <li class="list-group-item list-group-item-primary">{{ advert.body }}</li>
+                <li class="list-group-item list-group-item-primary">{{ advert.date_adv }}</li>
+                <li class="list-group-item list-group-item-primary">Tags</li>
+                <br>
+                <ul class="list-group list-group-flush"></ul>
+                {% for tag in advert.tags.all %}
+                    <li class="list-group-item list-group-item-secondary">{{ tag.title }}</li>
+                {% endfor %}
+                </ul>
+                <br>
+                <li class="list-group-item list-group-item-primary">Comments</li>
+                <br>
+                <ul class="list-group list-group-flush"></ul>
+                {% for comment in advert.comments.all %}
+                    <li class="list-group-item list-group-item-secondary">{{ comment.title }}</li>
+                    <li class="list-group-item list-group-item-secondary">{{ comment.date_com }}</li>
+                    <br>
+                {% endfor %}
+                </ul>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
