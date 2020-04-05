@@ -18,11 +18,11 @@ class AdvertList(ListView):
         context = super().get_context_data(**kwargs)
         adverts = cache.get('adverts')
         if adverts:
-            adverts = pickle.loads(adverts)
+            adverts_value = pickle.loads(adverts)
         else:
-            adverts = Advert.objects.all()
-            cache.set('adverts', pickle.dumps(adverts))
-        context['advert_list'] = adverts
+            adverts_value = Advert.objects.all()
+            cache.set('adverts', pickle.dumps(adverts_value))
+        context['advert_list'] = adverts_value
         return context
 
 class AdvertDetail(DetailView):
@@ -33,11 +33,11 @@ class AdvertDetail(DetailView):
         context = super().get_context_data(**kwargs)
         adverts = cache.get('adverts')
         if adverts:
-            adverts = pickle.loads(adverts)
+            adverts_value = pickle.loads(adverts)
         else:
-            adverts = Advert.objects.all()
-            cache.set('adverts', pickle.dumps(adverts))
-        context['advert'] = adverts.get(pk=self.kwargs['pk'])
+            adverts_value = Advert.objects.all()
+            cache.set('adverts', pickle.dumps(adverts_value))
+        context['advert'] = adverts_value.get(pk=self.kwargs['pk'])
         return context
         
 class AdvertStat(DetailView):
@@ -88,8 +88,8 @@ class EditAdvert(UpdateView):
     form_class = AdvertForm
     success_url = reverse_lazy('board:adverts-list')
     
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+    def form_valid(self, form):
+        self.object = form.save()
         adverts = Advert.objects.all()
         cache.set('adverts', pickle.dumps(adverts))
-        return super(BaseUpdateView, self).post(request, *args, **kwargs)
+        return HttpResponseRedirect(self.get_success_url())
